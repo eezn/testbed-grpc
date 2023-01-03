@@ -14,10 +14,19 @@ message User {
 }
 
 message UserIdx {
-  int64 idx = 1;
+  repeated int64 idx = 1;
 }
 
 service UserService {
   rpc setUser(User) returns(UserIdx);
   rpc getUser(UserIdx) returns(User);
+
+  // Client Streaming RPC
+  rpc setUsers(stream User) returns(UserIdx);
+
+  // Server Streaming RPC
+  rpc getUsers(UserIdx) returns(stream User);
+
+  // Bidirectional Streaming RPC
+  rpc getUsersRealtime(stream UserIdx) returns(stream User);
 }
