@@ -15,6 +15,7 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase {
     private final Map<Long, User> userMap = new HashMap<>();
     private long idxCounter = 1;
 
+    // Unary Set
     @Override
     public void setUser(User request, StreamObserver<UserIdx> responseObserver) {
 
@@ -31,6 +32,7 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase {
         responseObserver.onCompleted();
     }
 
+    // Unary Get
     @Override
     public void getUser(UserIdx request, StreamObserver<User> responseObserver) {
 
@@ -44,6 +46,21 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase {
         }
     }
 
+    // Server-side Streaming
+    @Override
+    public void getUsers(UserIdx request, StreamObserver<User> responseObserver) {
+
+        for (long idx : request.getIdxList()) {
+            if (userMap.containsKey(idx)) {
+                responseObserver.onNext(userMap.get(idx));
+            } else {
+                responseObserver.onError(new StatusException(Status.NOT_FOUND));
+            }
+        }
+        responseObserver.onCompleted();
+    }
+
+    // Client-side Streaming
     @Override
     public StreamObserver<User> setUsers(StreamObserver<UserIdx> responseObserver) {
 
@@ -73,19 +90,7 @@ public class UserServiceImpl extends UserServiceGrpc.UserServiceImplBase {
         };
     }
 
-    @Override
-    public void getUsers(UserIdx request, StreamObserver<User> responseObserver) {
-
-        for (long idx : request.getIdxList()) {
-            if (userMap.containsKey(idx)) {
-                responseObserver.onNext(userMap.get(idx));
-            } else {
-                responseObserver.onError(new StatusException(Status.NOT_FOUND));
-            }
-        }
-        responseObserver.onCompleted();
-    }
-
+    // Bidirectional Streaming
     @Override
     public StreamObserver<UserIdx> getUsersRealtime(StreamObserver<User> responseObserver) {
 

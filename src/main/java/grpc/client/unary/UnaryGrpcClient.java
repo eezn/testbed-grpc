@@ -7,6 +7,7 @@ import grpc.GrpcServerConst;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
+// 1:1 (Blocking, Async, Future)
 public class UnaryGrpcClient {
     public static void main(String[] args) {
 

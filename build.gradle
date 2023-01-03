@@ -3,7 +3,7 @@ plugins {
     id 'com.google.protobuf' version '0.8.18'
 }
 
-group 'com.atto.grpc'
+group 'net.eezn'
 version '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 

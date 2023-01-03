@@ -10,6 +10,7 @@ import io.grpc.StatusRuntimeException;
 
 import java.util.Iterator;
 
+// 1:N (Blocking, Async)
 public class ServerSideStreamGrpcClient {
     public static void main(String[] args) {
 

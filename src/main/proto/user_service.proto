@@ -18,15 +18,21 @@ message UserIdx {
 }
 
 service UserService {
+
+  // Unary
+  // Blocking, Async, Future
   rpc setUser(User) returns(UserIdx);
   rpc getUser(UserIdx) returns(User);
 
-  // Client Streaming RPC
-  rpc setUsers(stream User) returns(UserIdx);
-
-  // Server Streaming RPC
+  // Server Streaming RPC (1:N)
+  // Blocking, Async
   rpc getUsers(UserIdx) returns(stream User);
 
-  // Bidirectional Streaming RPC
+  // Client Streaming RPC (N:1)
+  // Async Only
+  rpc setUsers(stream User) returns(UserIdx);
+
+  // Bidirectional Streaming RPC (N:N)
+  // Async Only
   rpc getUsersRealtime(stream UserIdx) returns(stream User);
 }

@@ -12,6 +12,7 @@ import io.grpc.stub.StreamObserver;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
+// N:N (Async Only)
 public class BidirectionalStreamGrpcClient {
     public static void main(String[] args) {
 
@@ -45,21 +46,21 @@ public class BidirectionalStreamGrpcClient {
             }
         };
 
-        StreamObserver<UserIdx> requestObserver2 = asyncStub.getUsersRealtime(responseObserver);
+        StreamObserver<UserIdx> requestObserver = asyncStub.getUsersRealtime(responseObserver);
 
         try {
             for (int i = 1; i <= 5; ++i) {
-                requestObserver2.onNext(UserIdx.newBuilder()
+                requestObserver.onNext(UserIdx.newBuilder()
                         .addIdx(i)
                         .build());
                 Thread.sleep(1000);
             }
-            requestObserver2.onNext(UserIdx.newBuilder()
+            requestObserver.onNext(UserIdx.newBuilder()
                     .addIdx(6)
                     .addIdx(7)
                     .build());
         } catch (StatusRuntimeException | InterruptedException ignored) {}
-        requestObserver2.onCompleted();
+        requestObserver.onCompleted();
 
         try {
             finishLatch.await(1, TimeUnit.MINUTES);
