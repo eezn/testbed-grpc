@@ -1,8 +1,9 @@
-package unary.client;
+package grpc.client.unary;
 
 import com.atto.grpc.User;
 import com.atto.grpc.UserIdx;
 import com.atto.grpc.UserServiceGrpc;
+import grpc.GrpcServerConst;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -10,7 +11,7 @@ public class UnaryGrpcClient {
     public static void main(String[] args) {
 
         ManagedChannel channel = ManagedChannelBuilder
-                .forAddress("localhost", 8080)
+                .forAddress(GrpcServerConst.DOMAIN, GrpcServerConst.PORT)
                 .usePlaintext()
                 .build();
 
@@ -20,12 +21,12 @@ public class UnaryGrpcClient {
         // stub.setUser (UserServiceImpl.setUser) 호출
         UserIdx setUserResult = stub.setUser(User.newBuilder()
                 .setUsername("JIN-LEE")
-                .setEmail("JIN@LEE.com")
+                .setEmail("JIN-LEE@grpc.com")
                 .addRoles("USER")
                 .addRoles("ADMIN")
                 .build());
 
-        System.out.println("Client: " + setUserResult.getIdx());
+        System.out.println("Client: " + setUserResult.getIdx(0));
 
         // stub.getUser (UserServiceImpl.getUser) 호출
         User getUserResult = stub.getUser(setUserResult);
